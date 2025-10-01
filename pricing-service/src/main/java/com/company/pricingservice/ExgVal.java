@@ -1,15 +1,18 @@
 package com.company.pricingservice;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// Model Object
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Price {
-    private Long priceId;
-    private Long productId;
-    private Integer originalPrice;
-    private Integer discountPrice;
+public class ExgVal {
+
+    private Long id;
+    private Currencies from;
+    private Currencies to;
+    private Integer exgVal;
 }

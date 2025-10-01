@@ -15,7 +15,6 @@ public class InventoryController {
     @GetMapping("/inventory/{productId}")
     public Inventory getInventoryDetails(@PathVariable Long productId) {
         Inventory inventory = getInventoryInfo(productId);
-
         return inventory;
     }
 
@@ -30,6 +29,7 @@ public class InventoryController {
     }
 
     private void populateInventoryList() {
+        inventoryList.clear();
         inventoryList.add(new Inventory(301L, 101L, true));
         inventoryList.add(new Inventory(302L, 102L,true));
         inventoryList.add(new Inventory(303L, 101L, false));

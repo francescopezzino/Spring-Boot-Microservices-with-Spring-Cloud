@@ -43,7 +43,7 @@ public class ProductController {
     }
 
     private void populateProductList() {
-
+        productList.clear();
         productList.add(new ProductInfo(101L, "iPhone", "iPhone is damn expensive"));
         productList.add(new ProductInfo(102L, "Book", "Book is great"));
         productList.add(new ProductInfo(103L, "Washing machine", "Washing machine is necessary"));
