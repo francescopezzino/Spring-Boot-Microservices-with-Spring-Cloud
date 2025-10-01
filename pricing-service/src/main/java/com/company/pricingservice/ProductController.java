@@ -30,8 +30,8 @@ public class ProductController {
     }
 
     private void populatePriceList() {
-        priceList.add(new Price(201L, 101L, 1999,999));
-        priceList.add(new Price(202L, 102L, 199,19));
-        priceList.add(new Price(203L, 101L, 1222,600));
+        priceList.add(new Price(201L, 101L, 1999.0,999.0));
+        priceList.add(new Price(202L, 102L, 199.0,19.0));
+        priceList.add(new Price(203L, 101L, 1222.0,600.0));
     }
 }

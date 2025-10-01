@@ -1,4 +1,4 @@
-package com.company.pricingservice;
+package com.company.productservice;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
