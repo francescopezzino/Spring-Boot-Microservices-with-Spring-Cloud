@@ -3,6 +3,7 @@ package com.company.inventoryservice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +14,8 @@ public class InventoryController {
     List<Inventory> inventoryList = new ArrayList<>();
 
     @GetMapping("/inventory/{productId}")
-    public Inventory getInventoryDetails(@PathVariable Long productId) {
-        Inventory inventory = getInventoryInfo(productId);
+    public Mono<Inventory> getInventoryDetails(@PathVariable Long productId) {
+        Mono<Inventory> inventory = Mono.just(getInventoryInfo(productId));
         return inventory;
     }
 
@@ -32,6 +33,6 @@ public class InventoryController {
         inventoryList.clear();
         inventoryList.add(new Inventory(301L, 101L, true));
         inventoryList.add(new Inventory(302L, 102L,true));
-        inventoryList.add(new Inventory(303L, 101L, false));
+        inventoryList.add(new Inventory(303L, 103L, false));
     }
 }

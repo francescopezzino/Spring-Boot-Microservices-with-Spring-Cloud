@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +20,22 @@ public class PriceController {
     List<Price> priceList = new ArrayList<>();
 
     @GetMapping("/price/{productId}")
-    public Price getPriceDetails(@PathVariable Long productId) {
-        Price price = getPriceInfo(productId);
+    public Mono<Price> getPriceDetails(@PathVariable Long productId) {
+        Mono<Price> price = Mono.just(getPriceInfo(productId));
+
+        // Simulate it takes 10 sec to process, to show the asychronous reactive response do not wait
+        // for the thread to complete
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         // Get Exchange Value
-        Integer exgVal = restTemplate.getForObject("http://localhost:8004/currexg/from/USD/to/INR", ExgVal.class).getExgVal();
+        //Integer exgVal = restTemplate.getForObject("http://localhost:8004/currexg/from/USD/to/INR", ExgVal.class).getExgVal();
 
-        return new Price(price.getPriceId(), price.getProductId(), price.getOriginalPrice(), Math.multiplyExact(exgVal, price.getDiscountPrice()));
+        //return new Price(price.getPriceId(), price.getProductId(), price.getOriginalPrice(), Math.multiplyExact(exgVal, price.getDiscountPrice()));
+        return price;
     }
 
     private Price getPriceInfo(Long productId) {
@@ -39,9 +49,9 @@ public class PriceController {
     }
 
     private void populatePriceList() {
-        priceList.clear();.
+        priceList.clear();
         priceList.add(new Price(201L, 101L, 1999,999));
         priceList.add(new Price(202L, 102L, 199,19));
-        priceList.add(new Price(203L, 101L, 1222,600));
+        priceList.add(new Price(203L, 103L, 1222,600));
     }
 }
