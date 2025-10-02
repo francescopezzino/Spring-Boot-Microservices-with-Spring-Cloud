@@ -19,17 +19,21 @@ public class PriceController {
 
     List<Price> priceList = new ArrayList<>();
 
+    public PriceController() {
+        populatePriceList();
+    }
+
     @GetMapping("/price/{productId}")
     public Mono<Price> getPriceDetails(@PathVariable Long productId) {
         Mono<Price> price = Mono.just(getPriceInfo(productId));
 
         // Simulate it takes 10 sec to process, to show the asychronous reactive response do not wait
         // for the thread to complete
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(10000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         // Get Exchange Value
         //Integer exgVal = restTemplate.getForObject("http://localhost:8004/currexg/from/USD/to/INR", ExgVal.class).getExgVal();
@@ -39,7 +43,6 @@ public class PriceController {
     }
 
     private Price getPriceInfo(Long productId) {
-        populatePriceList();
         for (Price price : priceList) {
             if (price.getProductId().equals(productId)) {
                 return price;

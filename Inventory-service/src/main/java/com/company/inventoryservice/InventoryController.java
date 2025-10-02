@@ -13,6 +13,10 @@ public class InventoryController {
 
     List<Inventory> inventoryList = new ArrayList<>();
 
+    public InventoryController() {
+        populateInventoryList();
+    }
+
     @GetMapping("/inventory/{productId}")
     public Mono<Inventory> getInventoryDetails(@PathVariable Long productId) {
         Mono<Inventory> inventory = Mono.just(getInventoryInfo(productId));
@@ -20,7 +24,7 @@ public class InventoryController {
     }
 
     private Inventory getInventoryInfo(Long productId) {
-        populateInventoryList();
+
         for (Inventory inventory : inventoryList) {
             if (inventory.getProductId().equals(productId)) {
                 return inventory;

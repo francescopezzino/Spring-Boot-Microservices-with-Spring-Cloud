@@ -1,11 +1,11 @@
 package com.company.productservice;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.function.Tuple3;
 
@@ -21,6 +21,10 @@ public class ProductController {
     public WebClient webClient = WebClient.create();
 
 
+    public ProductController() {
+        populateProductList();
+    }
+
     @GetMapping("/product/details/{productId}")
     public Mono<Product> getProductDetails(@PathVariable Long productId) {
 
@@ -31,7 +35,7 @@ public class ProductController {
         // Get Price from pricing-service
         // introducing WebClient to make the API calls
         Mono<Price> price = webClient.get().uri("http://localhost:8002/price/{productId}", productId).retrieve().bodyToMono(Price.class);
-        
+
         // Get Stock Avail from invntory-serivice
         Mono<Inventory> inventory = webClient.get().uri("http://localhost:8003/inventory/{productId}", productId).retrieve().bodyToMono(Inventory.class);
         System.out.println("2");
@@ -46,6 +50,30 @@ public class ProductController {
                         tuple.getT3().getInStock()));
     }
 
+    @GetMapping("/product/list")
+    public Flux<Product> getProducts() {
+        Flux<Product> productFlux = Flux.fromStream(productList.stream()).flatMap(productInfo -> {
+
+            Mono<Price> price = webClient.get().uri("http://localhost:8002/price/{productId}", productInfo.getProductId()).retrieve()
+                    .bodyToMono(Price.class);
+
+            // Get Stock Avail from invntory-serivice
+            Mono<Inventory> inventory = webClient.get().uri("http://localhost:8003/inventory/{productId}", productInfo.getProductId()).retrieve().bodyToMono(Inventory.class);
+            System.out.println("2");
+
+            //return Mono.zip(productInfo, price, inventory).map(this::buildProduct);
+            // convert the method reference to a lambda:
+            return Mono.zip(price, inventory).map(tuple ->
+                    new Product(productInfo.getProductId(),
+                            productInfo.getProductName(),
+                            productInfo.getProductDesc(),
+                            tuple.getT1().getDiscountPrice(),
+                            tuple.getT2().getInStock()));
+
+        });
+        return productFlux;
+    }
+
     /*
     Can get
     public Product buildProduct(Tuple3<ProductInfo, Price, Inventory> tuple) {
@@ -54,7 +82,7 @@ public class ProductController {
     */
 
     private ProductInfo getProductInfo(Long productId) {
-        populateProductList();
+
         for (ProductInfo productInfo : productList) {
             if (productInfo.getProductId().equals(productId)) {
                 return productInfo;
