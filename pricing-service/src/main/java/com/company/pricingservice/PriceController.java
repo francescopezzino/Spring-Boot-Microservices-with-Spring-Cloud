@@ -1,21 +1,12 @@
 package com.company.pricingservice;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
-import reactor.core.publisher.Mono;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class PriceController {
-
-    @Autowired
-    private RestTemplate restTemplate;
 
     List<Price> priceList = new ArrayList<>();
 
@@ -24,22 +15,10 @@ public class PriceController {
     }
 
     @GetMapping("/price/{productId}")
-    public Mono<Price> getPriceDetails(@PathVariable Long productId) {
-        Mono<Price> price = Mono.just(getPriceInfo(productId));
+    public Price getPriceDetails(@PathVariable Long productId) {
+        Price price = getPriceInfo(productId);
 
-        // Simulate it takes 10 sec to process, to show the asychronous reactive response do not wait
-        // for the thread to complete
-//        try {
-//            Thread.sleep(10000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-
-        // Get Exchange Value
-        //Integer exgVal = restTemplate.getForObject("http://localhost:8004/currexg/from/USD/to/INR", ExgVal.class).getExgVal();
-
-        //return new Price(price.getPriceId(), price.getProductId(), price.getOriginalPrice(), Math.multiplyExact(exgVal, price.getDiscountPrice()));
-        return price;
+        return new Price(price.getPriceId(), price.getProductId(), price.getOriginalPrice(), price.getDiscountPrice());
     }
 
     private Price getPriceInfo(Long productId) {
