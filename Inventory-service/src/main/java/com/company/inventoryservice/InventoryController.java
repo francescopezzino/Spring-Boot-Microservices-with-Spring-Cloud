@@ -32,6 +32,6 @@ public class InventoryController {
         inventoryList.clear();
         inventoryList.add(new Inventory(301L, 101L, true));
         inventoryList.add(new Inventory(302L, 102L,true));
-        inventoryList.add(new Inventory(303L, 101L, false));
+        inventoryList.add(new Inventory(303L, 103L, false));
     }
 }

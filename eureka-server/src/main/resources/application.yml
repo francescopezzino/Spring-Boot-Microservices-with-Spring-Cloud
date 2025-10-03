@@ -5,7 +5,3 @@ eureka:
         register-with-eureka: false
         fetch-registry: false
     server:
-
-spring:
-    application:
-        name: eureka-server

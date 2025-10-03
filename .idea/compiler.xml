@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="product-service" />
+        <module name="eureka-server" />
         <module name="demoreactive" />
       </profile>
       <profile name="Annotation profile for currency-exchange-service" enabled="true">
@@ -20,7 +21,7 @@
         </processorPath>
         <module name="currency-exchange-service" />
       </profile>
-      <profile name="Annotation profile for pricing-service" enabled="true">
+      <profile name="Annotation profile for Inventory-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -37,6 +38,7 @@
       <module name="Inventory-service" options="-parameters" />
       <module name="currency-exchange-service" options="-parameters" />
       <module name="demoreactive" options="-parameters" />
+      <module name="eureka-server" options="-parameters" />
       <module name="pricing-service" options="-parameters" />
       <module name="product-service" options="-parameters" />
     </option>
